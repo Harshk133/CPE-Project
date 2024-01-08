@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const mongoose = require("mongoose");
+const sendVerificationEmail = require('../utils/sendVerificationEmail');
 
 // Connecting to the database
 // Connected to mongodb
@@ -80,7 +81,48 @@ const login = async (req, res) => {
     }
 }
 
+// Send verification email controller
+const sendVerificationEmailController = async (req, res) => {
+    try {
+        const { email, token } = req.body;
+        await sendVerificationEmail(email, token);
+        res.status(200).json({ message: 'Verification email sent successfully.' });
+    } catch (error) {
+        console.error('Error sending verification email:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
+const verifyEmail = async (req, res) => {
+    try {
+        const { token } = req.params;
+
+        // Verify the token (use your token verification logic)
+        const secretKey = process.env.JWT_SECRET || "defaultSecretKey";
+        const decodedToken = jwt.verify(token, secretKey); // Replace 'yourSecretKey' with your actual secret key
+
+        // Assuming you have a 'users' collection in MongoDB
+        const user = await User.findOneAndUpdate(
+            { email: decodedToken.email },
+            { $set: { isEmailVerified: true } },
+            { new: true }
+        );
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        return res.redirect('http://localhost:3000/login'); // Redirect to the login page or any other page
+    } catch (error) {
+        console.error('Error verifying email:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
 module.exports = {
     signup,
-    login
+    login,
+    verifyEmail,
+    sendVerificationEmail,
+    sendVerificationEmailController
 }
