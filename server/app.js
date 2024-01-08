@@ -7,8 +7,9 @@ const PizZip = require('pizzip');
 const bodyParser = require('body-parser');
 const Docxtemplater = require('docxtemplater');
 const officeParser = require('officeparser');
-const db = require("./db");
-db.connectToDatabase();
+
+// Configuration to the dotenv!
+require("dotenv").config();
 
 // Routes are here..
 const documentRoutes = require('./routes/uploadDocxRoute');
@@ -27,7 +28,7 @@ app.use(cors());
 
 // Router middleware!
 app.use('/api/documents', documentRoutes);
-app.use('/api/users', authRoutes);
+app.use('/api/users', authRoutes); 
 
 // Listening for a port for server!
 app.listen(port, () => {
