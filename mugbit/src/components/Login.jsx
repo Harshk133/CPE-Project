@@ -1,21 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-function Login() {
+const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
-    function handleEmailChange(e) {
-        setEmail(e.target.value);
-    }
-
-    function handlePasswordChange(e) {
-        setPassword(e.target.value);
-    }
-
-    async function handleLogin() {
-        // Make API call to authenticate user
-        // You can use the fetch function or a library like Axios
+    const handleLogin = async () => {
         try {
             const response = await fetch('/api/users/login', {
                 method: 'POST',
@@ -26,33 +18,43 @@ function Login() {
             });
 
             if (response.ok) {
-                // Handle successful login
-                console.log('User logged in successfully!');
+                // Successful login
+                const data = await response.json();
+
+                // Store the token in local storage
+                localStorage.setItem('token', data.token);
+                navigate('/page/homepage');
             } else {
-                // Handle login failure
-                console.error('Login failed:', response.statusText);
+                // Handle authentication error
+                const data = await response.json();
+                setError(data.message);
+                console.error('Login failed');
             }
         } catch (error) {
             console.error('Error during login:', error);
+            setError('Internal Server Error');
         }
-    }
-
+    };
 
     return (
         <div>
             <h2>Login</h2>
             <form>
                 <label>Email:</label>
-                <input type="email" value={email} onChange={handleEmailChange} />
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
 
                 <label>Password:</label>
-                <input type="password" value={password} onChange={handlePasswordChange} />
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
-                <button type="button" onClick={handleLogin}>Login</button>
-                <Link to="/signup">Sign Up!</Link>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+
+                <button type="button" onClick={handleLogin}>
+                    Log In
+                </button>
+                <Link to="/signup">Sign Up</Link>
             </form>
         </div>
-    )
-}
+    );
+};
 
-export default Login
+export default LoginPage;

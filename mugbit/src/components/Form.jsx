@@ -1,7 +1,6 @@
 import React from 'react'
 
 function Form() {
-
     const handleUploadFile = async () => {
         const formData = new FormData();
         const fileInput = document.getElementById('document');
@@ -12,42 +11,44 @@ function Form() {
             try {
                 const response = await fetch('/api/documents/upload-document', {
                     method: 'POST',
-                    body: formData
+                    body: formData,
                 });
-
+                
                 const result = await response.json();
 
                 // Display the extracted placeholders on the page
                 const resultDiv = document.getElementById('result');
-                resultDiv.innerHTML = `<big><tt>Extracted Placeholders:</tt> ${JSON.stringify(result.placeholders.join(", "))}</big><br/><br/>`;
+                resultDiv.innerHTML = `<big><tt>Extracted Placeholders:</tt> ${JSON.stringify(
+                    result.placeholders.join(', ')
+                )}</big><br/><br/>`;
 
                 // Create input fields dynamically
                 const inputFieldsDiv = document.createElement('div');
                 inputFieldsDiv.innerHTML = '<h2>Fill in the details:</h2>';
 
-                result.placeholders.forEach(placeholder => {
+                result.placeholders.forEach((placeholder) => {
                     const label = document.createElement('label');
-                    label.textContent = "Enter " + placeholder + '👉 ';
+                    label.textContent = `Enter ${placeholder}👉 `;
 
                     const input = document.createElement('input');
                     input.type = 'text';
                     input.name = placeholder;
-                    input.placeholder = 'Enter ' + placeholder;
+                    input.placeholder = `Enter ${placeholder}`;
 
                     inputFieldsDiv.appendChild(label);
                     inputFieldsDiv.appendChild(input);
                     inputFieldsDiv.appendChild(document.createElement('br'));
                 });
 
+                // Append the inputFieldsDiv to resultDiv
                 resultDiv.appendChild(inputFieldsDiv);
-
             } catch (error) {
                 console.error('Error uploading file:', error);
             }
         } else {
             alert('Please choose a document to upload.');
         }
-    }
+    };
 
     const handleSubmitForm = async () => {
         // Create an object from the entered values in the input fields
@@ -100,7 +101,7 @@ function Form() {
                 <div className="row justify-content-center">
                     <div className="col-md-6">
                         <div className="card">
-                            <img src="MugBit.PNG" alt="Logo" style={{ "width": "60%", "margin": "0 auto" }} />
+                            <img src="/MugBit.PNG" alt="Logo" style={{ "width": "60%", "margin": "0 auto" }} />
                             <div className="card-header text-white" style={{ "background": "orange" }}>
                                 <h1 className="text-center" style={{ "background": "orange", "color": "black" }}>Upload File 🔥</h1>
                             </div>
@@ -113,7 +114,7 @@ function Form() {
 
                                     <div style={{ "display": "flex", "justifyContent": "space-between" }}>
                                         <button type="button" onClick={handleUploadFile} className="btn btn-success" style={{ "background": "orange", "border": "orange" }}>Upload ✔️</button>
-                                        <button type="button" onClick={handleSubmitForm} className="btn" style={{"background": "yellowgreen"}}>Use This! 👍</button>
+                                        <button type="button" onClick={handleSubmitForm} className="btn" style={{ "background": "yellowgreen" }}>Use This! 👍</button>
                                     </div>
                                 </form>
 

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Signupform() {
     // Hooks are comes here...
     const [username, setUserName] = useState("");
     const [useremail, setUserEmail] = useState("");
     const [password, setUserPassword] = useState("");
+    const navigate = useNavigate();
 
     // funciton for posting the form data!
     const handleSignUp = async (e) => {
@@ -28,7 +29,9 @@ function Signupform() {
 
             if (response.ok) {
                 // Handle successful registration, e.g., redirect or show a success message
-                alert("Ye, Successfully signin!");
+                // alert("Ye, Successfully signin!");
+                navigate("/login");
+                console.log("You Clicked!")
               } else {
                 // Handle registration failure, e.g., show an error message
                 alert("ERROR 🌋");

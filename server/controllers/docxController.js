@@ -1,22 +1,17 @@
 
 // Require modules
 const fs = require("fs");
-const multer = require('multer');
 const PizZip = require('pizzip');
 const Docxtemplater = require('docxtemplater');
 const officeParser = require('officeparser');
+const File = require("../models/File");
+
 
 // Check for Is? there a document directory exists or not!
 const tempDir = './documents';
 if (!fs.existsSync(tempDir)) {
     fs.mkdirSync(tempDir);
 }
-
-// Setup of Multer
-// const storage = multer.memoryStorage();
-// const upload = multer({ storage: storage });
-
-// Controllers
 
 const uploadDocument = async (req, res) => {
     if (!req.file) {
@@ -51,7 +46,7 @@ const uploadDocument = async (req, res) => {
 
         const placeholders = extractAndConsolidatePlaceholders(data);
 
-        console.log('Consolidated Placeholders:', placeholders);
+        console.log('Consolidated Placeholders:', placeholders, "and the file is", fileBuffer);
 
         res.status(200).json({ placeholders });
     } catch (error) {
@@ -88,9 +83,35 @@ const submitForm = async (req, res) => {
         console.error('Error reading file:', error);
         res.status(500).send('Error reading the file.');
     }
-};
+}
+
+const uploadFile = async (req, res) => {
+    try {
+        const newFile = new File({
+            name: req.file.originalname,
+            data: req.file.buffer
+        });
+        await newFile.save();
+        res.json({ message: 'File uploaded successfully' });
+    } catch (error) {
+        console.error('Error uploading file:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+const getFiles = async (req, res) => {
+    try {
+      const files = await File.find({});
+      res.json(files);
+    } catch (error) {
+      console.error('Error fetching files:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
 
 module.exports = {
     uploadDocument,
-    submitForm
+    submitForm,
+    uploadFile,
+    getFiles
 }
