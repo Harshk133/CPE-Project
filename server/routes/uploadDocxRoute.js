@@ -12,7 +12,10 @@ router.post('/upload-document', upload.single('document'), documentController.up
 router.post('/submit-form', documentController.submitForm);
 
 router.post('/upload', upload.single('file'), documentController.uploadFile);
+// router.post("/generate/:documentId", documentController.generateDocument);
+router.post("/generate/:id", documentController.generateDocument);
 router.get('/files', documentController.getFiles);
+
 
 module.exports = router;
 

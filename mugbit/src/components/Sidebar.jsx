@@ -15,6 +15,9 @@ function Sidebar() {
                             <Link to="/page/formpage" style={{ color: "orange" }}>Form</Link>
                         </li>
                         <li>
+                            <Link to="/page/uploadpage" style={{ color: "orange" }}>Upload Document</Link>
+                        </li>
+                        <li>
                             <Link to="/signup" style={{ color: "orange" }}>Signup</Link>
                         </li>
                         <li>

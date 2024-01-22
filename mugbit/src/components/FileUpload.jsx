@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
+import Sidebar from './Sidebar';
 
 const FileUpload = () => {
   const [file, setFile] = useState(null);
@@ -27,9 +28,12 @@ const FileUpload = () => {
   };
 
   return (
-    <div>
+    <div className="container" style={{display: "flex"}}>
+      <Sidebar/>
+      <div>
       <input type="file" onChange={handleFileChange} />
       <button onClick={handleUpload}>Upload File</button>
+    </div>
     </div>
   );
 };
