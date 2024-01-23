@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Card, Modal, Form, Badge } from 'react-bootstrap';
-// import Sidebar from './Sidebar';
+// import {jwtDecode} from 'jwt-decode';
 import axios from 'axios';
 
-function Home() {
+function Home({ user }) {
   const [uploadedDocuments, setUploadedDocuments] = useState([]);
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [showFormModal, setShowFormModal] = useState(false);
@@ -26,6 +26,20 @@ function Home() {
       ...prevInput,
       [placeholderName]: value,
     }));
+  };
+
+  const handleDeleteDocument = async (documentId) => {
+    try {
+      const response = await axios.delete(`/api/documents/delete/${documentId}`);
+      if (response.status === 200) {
+        // Document deleted successfully, update the state to reflect the change
+        setUploadedDocuments((prevDocuments) => prevDocuments.filter(doc => doc._id !== documentId));
+      } else {
+        console.error('Error deleting document:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error deleting document:', error);
+    }
   };
 
   const handleFormSubmit = async () => {
@@ -72,6 +86,59 @@ function Home() {
     return () => clearInterval(intervalId);
   }, []);
 
+  // ####################### For User Data #######################
+  // const [userData, setUserData] = useState({});
+
+  // async function fetchUserData(token) {
+  //     try {
+  //         // Replace 'your-server-endpoint' with the actual server endpoint
+  //         const response = await fetch('/api/users/login', {
+  //             method: 'GET',
+  //             headers: {
+  //                 'Authorization': `Bearer ${token}`
+  //                 // Add other headers if needed
+  //             }
+  //         });
+
+  //         if (response.ok) {
+  //             const user = await response.json();
+  //             setUserData(user);
+  //             console.log("my user>>>", user);
+  //         } else {
+  //             // Handle errors
+  //             console.log('Error fetching user data');
+  //         }
+  //     } catch (error) {
+  //         // Handle fetch errors
+  //         console.error('Fetch error:', error);
+  //     }
+  // }
+
+  // useEffect(() => {
+  //     const token = localStorage.getItem('token'); // Replace 'your-token-key' with the actual key
+
+  //     if (token) {
+  //         decodeToken(token);
+  //         fetchUserData(token);
+  //     } else {
+  //         // Handle the case where there's no token
+  //         console.log('else case goes here....');
+  //     }
+  // }, []);
+
+  // function decodeToken(token) {
+  //     try {
+  //         const decoded = jwtDecode(token); // Assuming you have jwt_decode installed
+  //         setUserData(decoded);
+  //         console.log(decoded);
+  //     } catch (error) {
+  //         // Handle decoding errors
+  //         console.error('Token decoding error:', error);
+  //     }
+  // }
+
+ 
+
   return (
     <>
       <div className='container' style={{ margin: 0, padding: 0, width: '100%', height: '100vh', display: 'flex', justifyContent: "space-between" }}>
@@ -79,20 +146,20 @@ function Home() {
         <div style={{ margin: 0, padding: 0, width: '100%', overflowY: "auto" }}>
 
           <h2><center><tt>Welcome, to MugBit!</tt></center></h2>
-
-          <Button style={{ background: 'orange', border: '1px solid orange' }}>Hello</Button>
-
           <br />
-
           <div style={{ display: 'flex', flexWrap: 'wrap' }}>
             {uploadedDocuments && uploadedDocuments.map((document, index) => (
-              <Card key={index} style={{ width: '12rem', margin: '10px', cursor: 'pointer' }} onClick={() => handleDocumentClick(document)}>
+              <Card key={index} style={{ width: '12rem', margin: '10px', cursor: 'pointer' }}>
                 <Card.Body>
                   <img src="/MugBit.PNG" alt="Logo" />
                   <Card.Title><small><b>{document.name}</b></small></Card.Title>
                   <Card.Text>
-                    Uploaded by: {document.uploadedBy}
+                    Uploaded by: {document.uploadedBy} 
+                    {/* {userData.username} */}
+                    {/* {user.username} */}
                     <Badge bg="info">Document</Badge>
+                    <Button style={{ background: 'orange', border: '1px solid orange' }} onClick={() => handleDocumentClick(document)}>Use This!</Button>
+                    <Button variant="danger" style={{ marginLeft: '5px' }} onClick={() => handleDeleteDocument(document._id)}>Delete</Button>
                   </Card.Text>
                 </Card.Body>
               </Card>

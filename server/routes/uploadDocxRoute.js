@@ -16,6 +16,8 @@ router.post('/upload', upload.single('file'), documentController.uploadFile);
 router.post("/generate/:id", documentController.generateDocument);
 router.get('/files', documentController.getFiles);
 
+// to delete the routes
+router.delete('/delete/:documentId', documentController.deleteDocument);
 
 module.exports = router;
 

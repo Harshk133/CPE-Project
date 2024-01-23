@@ -129,52 +129,53 @@ const submitForm = async (req, res) => {
 
 const uploadFile = async (req, res) => {
     try {
-      if (!req.file) {
-        return res.status(400).json({ error: 'No file provided' });
-      }
-  
-      const fileBuffer = req.file.buffer;
-      const tempFilePath = './documents/tempFile.docx';
-  
-      await fs.promises.writeFile(tempFilePath, fileBuffer);
-  
-      // Assuming officeParser is an asynchronous function
-      const data = await officeParser.parseOfficeAsync(fileBuffer);
-  
-      const extractAndConsolidatePlaceholders = (text) => {
-        const regex = /\{([^}]+)\}/g;
-        const matches = text.match(regex);
-  
-        if (!matches) {
-          return [];
+        if (!req.file) {
+            return res.status(400).json({ error: 'No file provided' });
         }
-  
-        const uniquePlaceholders = new Set();
-  
-        matches.forEach((match) => {
-          const placeholder = match.slice(1, -1);
-          uniquePlaceholders.add(placeholder);
+
+        const fileBuffer = req.file.buffer;
+        const tempFilePath = './documents/tempFile.docx';
+
+        await fs.promises.writeFile(tempFilePath, fileBuffer);
+
+        // Assuming officeParser is an asynchronous function
+        const data = await officeParser.parseOfficeAsync(fileBuffer);
+
+        const extractAndConsolidatePlaceholders = (text) => {
+            const regex = /\{([^}]+)\}/g;
+            const matches = text.match(regex);
+
+            if (!matches) {
+                return [];
+            }
+
+            const uniquePlaceholders = new Set();
+
+            matches.forEach((match) => {
+                const placeholder = match.slice(1, -1);
+                uniquePlaceholders.add(placeholder);
+            });
+
+            return Array.from(uniquePlaceholders);
+        };
+
+        const outputPlaceholders = extractAndConsolidatePlaceholders(data);
+
+        const newFile = new File({
+            name: req.file.originalname,
+            data: req.file.buffer,
+            placeholders: outputPlaceholders,
+            uploadedBy: req.body.username
         });
-  
-        return Array.from(uniquePlaceholders);
-      };
-  
-      const outputPlaceholders = extractAndConsolidatePlaceholders(data);
-  
-      const newFile = new File({
-        name: req.file.originalname,
-        data: req.file.buffer,
-        placeholders: outputPlaceholders,
-      });
-  
-      await newFile.save();
-  
-      res.json({ message: 'File uploaded successfully' });
+
+        await newFile.save();
+
+        res.json({ message: 'File uploaded successfully' });
     } catch (error) {
-      console.error('Error uploading file:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
+        console.error('Error uploading file:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-  };
+};
 
 const getFiles = async (req, res) => {
     try {
@@ -259,10 +260,36 @@ const generateDocument = async (req, res) => {
 }
 
 
+
+const deleteDocument = async (req, res) => {
+    const documentId = req.params.documentId;
+
+    try {
+        // Find the document by ID
+        const document = await File.findById(documentId);
+
+        // Check if the document exists
+        if (!document) {
+            return res.status(404).json({ error: 'Document not found' });
+        }
+
+        // Perform the deletion
+        await document.remove();
+
+        // Respond with a success message
+        res.status(200).json({ message: 'Document deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting document:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+
 module.exports = {
     uploadDocument,
     submitForm,
     uploadFile,
     getFiles,
-    generateDocument
+    generateDocument,
+    deleteDocument
 }

@@ -70,7 +70,9 @@ const login = async (req, res) => {
 
         // Create a JWT Token
         const secretKey = process.env.JWT_SECRET || "defaultSecretKey";
-        const token = jwt.sign({ email: user.email }, secretKey);
+        const token = jwt.sign({ username: user.username, email: user.email }, secretKey);
+
+        console.log(user);
 
         // Respond with the token and user information
         res.status(200).json({ token, user: { username: user.username, email: user.email } });
@@ -88,7 +90,9 @@ const profile = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        res.json({ user: { username: user.username, email: user.email } });
+        console.log(user);
+
+        res.json({ username: user.username, email: user.email });
     } catch (error) {
         console.error('Error fetching user details:', error);
         res.status(500).json({ message: 'Internal Server Error' });

@@ -4,7 +4,7 @@ import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 // import Sidebar from './Sidebar';
 
-const FileUpload = () => {
+const FileUpload = ({ user }) => {
   const [file, setFile] = useState(null);
 
   const handleFileChange = (event) => {
@@ -15,6 +15,8 @@ const FileUpload = () => {
     try {
       const formData = new FormData();
       formData.append('file', file);
+      formData.append('username', user && user.username);
+      console.log(formData, user && user.username);
 
       await axios.post('/api/documents/upload', formData, {
         headers: {
