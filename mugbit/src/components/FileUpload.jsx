@@ -1,7 +1,8 @@
 
 import React, { useState } from 'react';
+import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
-import Sidebar from './Sidebar';
+// import Sidebar from './Sidebar';
 
 const FileUpload = () => {
   const [file, setFile] = useState(null);
@@ -28,12 +29,23 @@ const FileUpload = () => {
   };
 
   return (
-    <div className="container" style={{display: "flex"}}>
-      <Sidebar/>
-      <div>
-      <input type="file" onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload File</button>
-    </div>
+    <div className="container" style={{ display: "flex", width: "100%", margin: 0, padding: 0 }}>
+      {/* <Sidebar /> */}
+      <div className='FormContainer' style={{ margin: "50px auto" }}>
+        <Form>
+          <h3>
+            <Form.Label>Input the File</Form.Label>
+          </h3>
+          <br />
+          <Form.Control
+            required
+            type="file"
+            onChange={handleFileChange}
+          />
+          <br />
+          <Button onClick={handleUpload}>Upload File</Button>
+        </Form>
+      </div>
     </div>
   );
 };

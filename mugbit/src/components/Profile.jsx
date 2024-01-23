@@ -1,10 +1,10 @@
 import React from 'react'
-import Sidebar from './Sidebar';
+// import Sidebar from './Sidebar';
 
 function Profile() {
   return (
     <div style={{display: "flex"}}>
-        <Sidebar/>
+        {/* <Sidebar/> */}
       <div>
         User Profile!
       </div>

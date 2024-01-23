@@ -1,4 +1,5 @@
 import React from 'react'
+// import Sidebar from './Sidebar';
 
 function Form() {
     const handleUploadFile = async () => {
@@ -96,11 +97,11 @@ function Form() {
 
     return (
         <div>
-            <div className="container my-7">
-                <br />
-                <div className="row justify-content-center">
+            <div className="container my-7" style={{display: "flex", padding: 0, margin: 0}}>
+                {/* <Sidebar/> */}
+                <div className="row justify-content-center" style={{width: "80%"}}>
                     <div className="col-md-6">
-                        <div className="card">
+                        <div className="card" style={{marginTop: "40px", width: "350%"}}>
                             <img src="/MugBit.PNG" alt="Logo" style={{ "width": "60%", "margin": "0 auto" }} />
                             <div className="card-header text-white" style={{ "background": "orange" }}>
                                 <h1 className="text-center" style={{ "background": "orange", "color": "black" }}>Upload File 🔥</h1>

@@ -1,30 +1,39 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-function Sidebar() {
+import CIcon from '@coreui/icons-react';
+import { cilHome, cilUser, cilUnderline, cilCloudUpload, cilAccountLogout } from '@coreui/icons';
 
+function Sidebar() {
     return (
         <>
-            <div style={{ border: '1px solid black', height: "100vh", width: "15%" }}>
-                <nav>
-                    hey 🙋‍♂️
+            <div style={{ border: '1px solid black', height: "100vh", width: "30%", padding: "27px" }}>
+                <nav style={{ lineHeight: "40px" }}>
+                    <big><b>hey 🙋‍♂️</b></big>
+                    <br />
                     <ul style={{ listStyle: 'none', padding: "4px" }}>
-                        <li>
-                            <Link to="/page/homepage" style={{ color: "orange" }}>Home</Link>
+                        <li style={{ display: "flex" }}>
+                            <CIcon icon={cilHome} size="sm" style={{ width: "20px", marginRight: "7px" }} />
+                            <Link to="/page/homepage" style={{ color: "orange", fontWeight: "bold" }}>Home</Link>
                         </li>
                         <li>
-                            <Link to="/page/formpage" style={{ color: "orange" }}>Form</Link>
+                            <CIcon icon={cilUser} size="sm" style={{ width: "20px", marginRight: "7px" }} />
+                            <Link to="/page/profilepage" style={{ color: "orange", fontWeight: "bold" }}>Profile</Link>
                         </li>
                         <li>
-                            <Link to="/page/uploadpage" style={{ color: "orange" }}>Upload Document</Link>
+                            <CIcon icon={cilUnderline} size="sm" style={{ width: "20px", marginRight: "7px" }} />
+                            <Link to="/page/formpage" style={{ color: "orange", fontWeight: "bold" }}>Form</Link>
                         </li>
                         <li>
+                            <CIcon icon={cilCloudUpload} size="sm" style={{ width: "20px", marginRight: "7px" }} />
+                            <Link to="/page/uploadpage" style={{ color: "orange", fontWeight: "bold" }}>Upload Document</Link>
+                        </li>
+                        {/* <li>
+                            <CIcon icon={cilHome} size="sm" style={{ width: "20px", marginRight: "7px" }} />
                             <Link to="/signup" style={{ color: "orange" }}>Signup</Link>
-                        </li>
+                        </li>                         */}
                         <li>
-                            <Link to="/page/profilepage" style={{ color: "orange" }}>Profile</Link>
-                        </li>
-                        <li>
-                            <Link to="/login" style={{ color: "orange" }}>Logout</Link>
+                            <CIcon icon={cilAccountLogout} size="sm" style={{ width: "20px", marginRight: "7px" }} />
+                            <Link to="/login" style={{ color: "orange", fontWeight: "bold" }}>Logout</Link>
                         </li>
                     </ul>
                 </nav>

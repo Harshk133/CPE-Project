@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Card, Modal, Form } from 'react-bootstrap';
-import Sidebar from './Sidebar';
+import { Button, Card, Modal, Form, Badge } from 'react-bootstrap';
+// import Sidebar from './Sidebar';
 import axios from 'axios';
 
 function Home() {
@@ -74,25 +74,31 @@ function Home() {
 
   return (
     <>
-      <div className='container' style={{ margin: 0, padding: 0, width: '100%', height: '100vh', display: 'flex' }}>
-        <Sidebar />
-        <div style={{ padding: '2px 10px', margin: '0 auto', width: '80%' }}>
+      <div className='container' style={{ margin: 0, padding: 0, width: '100%', height: '100vh', display: 'flex', justifyContent: "space-between" }}>
+        {/* <Sidebar /> */}
+        <div style={{ margin: 0, padding: 0, width: '100%', overflowY: "auto" }}>
+
           <h2><center><tt>Welcome, to MugBit!</tt></center></h2>
+
           <Button style={{ background: 'orange', border: '1px solid orange' }}>Hello</Button>
+
           <br />
+
           <div style={{ display: 'flex', flexWrap: 'wrap' }}>
             {uploadedDocuments && uploadedDocuments.map((document, index) => (
-              <Card key={index} style={{ width: '18rem', margin: '10px', cursor: 'pointer' }} onClick={() => handleDocumentClick(document)}>
+              <Card key={index} style={{ width: '12rem', margin: '10px', cursor: 'pointer' }} onClick={() => handleDocumentClick(document)}>
                 <Card.Body>
                   <img src="/MugBit.PNG" alt="Logo" />
-                  <Card.Title>{document.name}</Card.Title>
+                  <Card.Title><small><b>{document.name}</b></small></Card.Title>
                   <Card.Text>
                     Uploaded by: {document.uploadedBy}
+                    <Badge bg="info">Document</Badge>
                   </Card.Text>
                 </Card.Body>
               </Card>
             ))}
           </div>
+
           <Modal key={selectedDocument ? selectedDocument.id : 'no-document'} show={showFormModal} onHide={handleCloseFormModal}>
             <Modal.Header closeButton>
               <Modal.Title>Fill in the Document</Modal.Title>
@@ -125,6 +131,7 @@ function Home() {
     </>
   );
 }
+
 
 export default Home;
 
