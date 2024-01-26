@@ -42,6 +42,7 @@ const LoginPage = () => {
            <img src="/bg.jpg" alt="background image" style={{ width: "100vw", objectFit: "cover", position: "relative", zIndex: 1, overflowY: 'hidden', overflowX: 'hidden', height: "100vh" }} />
             <Form style={{ position: "relative", zIndex: 10, top: "-510px", width: "70%", margin: "0 auto", height: "100vh" }}>
                 <h2>Login To MugBit!</h2>
+                <p style={{width: "170px", height: "2px", background: "orange"}}></p>
                 <Form.Label>{error && <p style={{ color: 'red' }}>{error}</p>}</Form.Label>
                 <Form.Group className="mb-3" controlId="formGroupEmail">
                     <Form.Label>Email Address</Form.Label>

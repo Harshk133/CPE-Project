@@ -48,6 +48,7 @@ function Signupform() {
 
             <Form onSubmit={handleSignUp} style={{ position: "relative", zIndex: 10, top: "-510px", width: "70%", margin: "0 auto", height: "100vh" }}>
             <h2>Signin To MugBit!</h2>
+            <p style={{width: "170px", height: "2px", background: "orange"}}></p>
                 <Form.Group>
                     <Form.Label>Enter Your Username</Form.Label>
                     <Form.Control type="text" value={username}

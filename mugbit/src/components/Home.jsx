@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card, Modal, Form, Badge, Placeholder } from 'react-bootstrap';
 import Skeleton from 'react-loading-skeleton';
 import axios from 'axios';
+import "./css/Home.css";
 
-function Home({ user }) {
+function Home({ user, isMenuOpen }) {
   const [uploadedDocuments, setUploadedDocuments] = useState([]);
   const [selectedDocument, setSelectedDocument] = useState(null);
   const [showFormModal, setShowFormModal] = useState(false);
@@ -95,7 +96,8 @@ function Home({ user }) {
 
   return (
     <>
-      <div className='container' style={{ margin: 0, padding: 0, width: '100%', height: '100vh', display: 'flex', justifyContent: "space-between" }}>
+    {/* style={{ margin: 0, padding: 0, width: '100%', height: '100vh', display: 'flex', justifyContent: "space-between" }} */}
+      <div className={`${isMenuOpen ? 'content-compressed' : 'main-content'}`} >
         {/* <Sidebar /> */}
         <div style={{ margin: 0, padding: 0, width: '100%', overflowY: "auto" }}>
 

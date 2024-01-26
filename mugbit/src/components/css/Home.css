@@ -1,0 +1,16 @@
+.main-content {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-y: auto;
+    transition: margin-left 0.3s ease;
+}
+
+.content-compressed {
+    width: 3100px;
+    transition: width 1s ease;
+}
+
+.main-content {
+    transition: width 1s ease;
+}

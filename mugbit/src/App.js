@@ -8,57 +8,62 @@ import PrivateRoute from "./components/PrivateRoute";
 import Profile from "./components/Profile";
 import FileUpload from "./components/FileUpload";
 import Sidebar from "./components/Sidebar";
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 function App() {
   const [userData, setUserData] = useState({});
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   async function fetchUserData(token) {
-      try {
-          // Replace 'your-server-endpoint' with the actual server endpoint
-          const response = await fetch('/api/users/login', {
-              method: 'GET',
-              headers: {
-                  'Authorization': `Bearer ${token}`
-                  // Add other headers if needed
-              }
-          });
+    try {
+      // Replace 'your-server-endpoint' with the actual server endpoint
+      const response = await fetch('/api/users/login', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+          // Add other headers if needed
+        }
+      });
 
-          if (response.ok) {
-              const user = await response.json();
-              setUserData(user);
-              console.log("my user>>>", user);
-          } else {
-              // Handle errors
-              console.log('Error fetching user data');
-          }
-      } catch (error) {
-          // Handle fetch errors
-          console.error('Fetch error:', error);
+      if (response.ok) {
+        const user = await response.json();
+        setUserData(user);
+        console.log("my user>>>", user);
+      } else {
+        // Handle errors
+        console.log('Error fetching user data');
       }
+    } catch (error) {
+      // Handle fetch errors
+      console.error('Fetch error:', error);
+    }
   }
 
-  useEffect(() => {
-      const token = localStorage.getItem('token'); // Replace 'your-token-key' with the actual key
+  const toggleMenuCallback = (isOpen) => {
+    setIsMenuOpen(isOpen);
+  };
 
-      if (token) {
-          decodeToken(token);
-          fetchUserData(token);
-      } else {
-          // Handle the case where there's no token
-          console.log('else case goes here....');
-      }
+  useEffect(() => {
+    const token = localStorage.getItem('token'); // Replace 'your-token-key' with the actual key
+
+    if (token) {
+      decodeToken(token);
+      fetchUserData(token);
+    } else {
+      // Handle the case where there's no token
+      console.log('else case goes here....');
+    }
   }, []);
 
   function decodeToken(token) {
-      try {
-          const decoded = jwtDecode(token); // Assuming you have jwt_decode installed
-          setUserData(decoded);
-          console.log(decoded);
-      } catch (error) {
-          // Handle decoding errors
-          console.error('Token decoding error:', error);
-      }
+    try {
+      const decoded = jwtDecode(token); // Assuming you have jwt_decode installed
+      setUserData(decoded);
+      console.log(decoded);
+    } catch (error) {
+      // Handle decoding errors
+      console.error('Token decoding error:', error);
+    }
   }
 
   // Logout!
@@ -75,13 +80,13 @@ function App() {
       <Router>
         <div style={{ display: "flex" }}>
           {/* <Sidebar user={userData} /> */}
-          {userData && userData.username && <Sidebar user={userData} onLogout={handleLogout} />}
+          {userData && userData.username && <Sidebar user={userData} onLogout={handleLogout} toggleMenuCallback={toggleMenuCallback} />}
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signupform />} />
             <Route path="/page" element={<PrivateRoute />}>
-              <Route path="homepage" element={<Home user={userData} />} />
+              <Route path="homepage" element={<Home user={userData} isMenuOpen={isMenuOpen} />} />
               <Route path="formpage" element={<Form />} />
               <Route path="profilepage" element={<Profile user={userData} />} />
               <Route path="uploadpage" element={<FileUpload user={userData} />} />
