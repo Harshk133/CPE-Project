@@ -8,11 +8,12 @@
     max-width: 70%;
     width: 30%;
     height: 100vh;
+    transition: all 1s ease;
 }
 
 .navbar{
     padding-top: 0;
-    width: 100%;
+    width: 110%;
     height: 100vh;
     /* transition: width 0.3s ease; */
 }
@@ -42,7 +43,7 @@
 }
 
 .row-2{
-    margin-left: -10px;
+    margin-left: 20px;
     line-height: 50px;
     height: 100vh;
     background-color: white;

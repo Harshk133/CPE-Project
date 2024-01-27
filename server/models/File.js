@@ -4,7 +4,8 @@ const fileSchema = new mongoose.Schema({
     name: String,
     data: Buffer,
     placeholders: [String],
-    uploadedBy: String 
+    uploadedBy: String,
+    downloadedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] 
 });
 
 fileSchema.methods.remove = function () {

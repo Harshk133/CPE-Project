@@ -8,7 +8,6 @@ import {
 import "./css/Sidebar.css";
 
 function Sidebar({ user, onLogout, toggleMenuCallback }) {
-
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () => {
@@ -18,8 +17,7 @@ function Sidebar({ user, onLogout, toggleMenuCallback }) {
     };
 
     return (
-        <>
-        
+        <>        
             <div id ='navbar-container' className={`navbar-container ${isMenuOpen ? 'menu-open' : ''}`}>
                 <nav className='navbar'>
                     <div className='row-container'>
@@ -64,19 +62,19 @@ function Sidebar({ user, onLogout, toggleMenuCallback }) {
                         <div className="row-2">
                             <ul>
                                 <li>
-                                    <Link><big><b>hey 🙋‍♂️ {user.username}</b></big></Link>
+                                    <Link to="/page/profilepage"><span><small><b>hey 🙋‍♂️ {user.username}</b></small></span></Link>
                                 </li>
                                 <li>
-                                    <Link>Home</Link>
+                                    <Link to="/page/homepage">Home</Link>
                                 </li>
                                 <li>
-                                    <Link>Profile</Link>
+                                    <Link to="/page/profilepage">Profile</Link>
                                 </li>
                                 <li>
-                                    <Link>Form</Link>
+                                    <Link to="/page/formpage">Form</Link>
                                 </li>
                                 <li>
-                                    <Link>Upload</Link>
+                                    <Link to="/page/uploadpage">Upload</Link>
                                 </li>
                                 <li>
                                     <Link>Settings</Link>

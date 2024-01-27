@@ -1,6 +1,7 @@
 // Basic Module are requirer here..
 const cors = require('cors');
 const express = require('express');
+const path = require("path");
 const fs = require("fs");
 const multer = require('multer');
 const PizZip = require('pizzip');
@@ -25,6 +26,7 @@ const port = 7000;
 // app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/uploads/images', express.static(path.join(__dirname, 'uploads/images')));
 app.use(cors());
 
 // Router middleware!

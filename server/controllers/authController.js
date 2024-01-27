@@ -12,6 +12,7 @@ mongoose.connect("mongodb://localhost:27017/MugBitDB");
 const signup = async (req, res) => {
     try {
         const { username, useremail, password } = req.body;
+        const image = req.file.filename;
 
         console.log(req.body);
 
@@ -30,7 +31,8 @@ const signup = async (req, res) => {
         const newUser = new User({
             username,
             email: useremail,
-            password: hashedPassword
+            password: hashedPassword,
+            image
         });
 
         // Saving the new user..
@@ -43,7 +45,7 @@ const signup = async (req, res) => {
         }, secretKey);
 
         // Respond with the token and user information
-        res.status(201).json({ token, user: { username: newUser.username, email: newUser.email } });
+        res.status(201).json({ token, user: { username: newUser.username, email: newUser.email, img: newUser.image } });
     } catch (error) {
         console.log("Error during Signup: ", error);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -68,39 +70,25 @@ const login = async (req, res) => {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
 
+        const imageUrl = user.image ? `http://localhost:7000/uploads/images/${user.image}` : null;
+
         // Create a JWT Token
         const secretKey = process.env.JWT_SECRET || "defaultSecretKey";
-        const token = jwt.sign({ username: user.username, email: user.email }, secretKey);
+        const token = jwt.sign({ username: user.username, email: user.email, userimg: imageUrl }, secretKey);
 
-        console.log(user);
+
+
+        console.log(imageUrl);
 
         // Respond with the token and user information
-        res.status(200).json({ token, user: { username: user.username, email: user.email } });
+        res.status(200).json({ token, user: { username: user.username, email: user.email, userimg: imageUrl } });
     } catch (error) {
         console.error('Error during login:', error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 }
 
-const profile = async (req, res) => {
-    try {
-        const user = await User.findOne({ email: req.user.email });
-
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-
-        console.log(user);
-
-        res.json({ username: user.username, email: user.email });
-    } catch (error) {
-        console.error('Error fetching user details:', error);
-        res.status(500).json({ message: 'Internal Server Error' });
-    }
-}
-
 module.exports = {
     signup,
-    login,
-    profile
+    login
 }

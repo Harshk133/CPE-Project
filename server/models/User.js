@@ -13,7 +13,8 @@ const userSchema = moongose.Schema({
     password: {
         type: String,
         required: true 
-    }
+    }, 
+    image: String
 });
 
 module.exports = moongose.model("User", userSchema);

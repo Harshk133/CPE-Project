@@ -286,29 +286,29 @@ const deleteDocument = async (req, res) => {
 const handleUpload = async (req, res) => {
     const { file, username } = req.body;
     const existingDocument = await Document.findOne({ user: username, name: file.originalname });
-  
+
     if (existingDocument) {
-      return res.status(400).json({ error: 'Document with the same name already exists.' });
+        return res.status(400).json({ error: 'Document with the same name already exists.' });
     }
 
     try {
-      const newDocument = new Document({
-        user: username,
-        name: file.originalname,
-        // other document details...
-      });
-  
-      // Save the document details to the database
-      await newDocument.save();
-  
-      // Perform the actual file upload logic here...
-  
-      res.status(200).json({ message: 'Document uploaded successfully.' });
+        const newDocument = new Document({
+            user: username,
+            name: file.originalname,
+            // other document details...
+        });
+
+        // Save the document details to the database
+        await newDocument.save();
+
+        // Perform the actual file upload logic here...
+
+        res.status(200).json({ message: 'Document uploaded successfully.' });
     } catch (error) {
-      console.error('Error uploading document:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
+        console.error('Error uploading document:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
-  };
+};
 
 module.exports = {
     uploadDocument,
