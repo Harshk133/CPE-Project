@@ -8,6 +8,8 @@ import PrivateRoute from "./components/PrivateRoute";
 import Profile from "./components/Profile";
 import FileUpload from "./components/FileUpload";
 import Sidebar from "./components/Sidebar";
+import OtherUserProfile from "./components/OtherUserProfile";
+import { Link } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
 function App() {
@@ -89,6 +91,7 @@ function App() {
               <Route path="homepage" element={<Home user={userData} isMenuOpen={isMenuOpen} />} />
               <Route path="formpage" element={<Form />} />
               <Route path="profilepage" element={<Profile user={userData} />} />
+              <Route path="oprofilepage/:username" element={<OtherUserProfile user={userData} />} />
               <Route path="uploadpage" element={<FileUpload user={userData} />} />
             </Route>
           </Routes>

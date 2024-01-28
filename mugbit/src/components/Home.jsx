@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Card, Modal, Form, Badge, Placeholder } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
 import axios from 'axios';
 import "./css/Home.css";
@@ -90,13 +91,12 @@ function Home({ user, isMenuOpen }) {
     return () => clearInterval(intervalId);
   }, []);
 
-  console.log('user.username:', user && user.username);
-  console.log('document.uploadedBy:', document.uploadedBy);
-
+  // console.log(user.userimg);
+  // console.log(uploadedDocuments);
 
   return (
     <>
-    {/* style={{ margin: 0, padding: 0, width: '100%', height: '100vh', display: 'flex', justifyContent: "space-between" }} */}
+      {/* style={{ margin: 0, padding: 0, width: '100%', height: '100vh', display: 'flex', justifyContent: "space-between" }} */}
       <div className={`${isMenuOpen ? 'content-compressed' : 'main-content'}`} >
         {/* <Sidebar /> */}
         <div style={{ margin: 0, padding: 0, width: '100%', overflowY: "auto" }}>
@@ -118,16 +118,16 @@ function Home({ user, isMenuOpen }) {
                 <Card style={{ width: '12rem', margin: '10px', cursor: 'pointer' }}>
                   <Card.Img variant="top" src="/Mugbit.png" />
                   <Card.Body>
-                    <Placeholder as={Card.Title} animation="glow" style={{background: "#656b71", color: "whitesmoke"}}>
-                      <Placeholder xs={6} style={{background: "#656b71", color: "whitesmoke"}} />
+                    <Placeholder as={Card.Title} animation="glow" style={{ background: "#656b71", color: "whitesmoke" }}>
+                      <Placeholder xs={6} style={{ background: "#656b71", color: "whitesmoke" }} />
                     </Placeholder>
-                    <Placeholder as={Card.Text} animation="glow" style={{background: "#656b71", color: "whitesmoke"}}>
-                      <Placeholder xs={7} style={{background: "#656b71", color: "whitesmoke"}} /> 
-                      <Placeholder xs={4} style={{background: "#656b71", color: "whitesmoke"}} /> 
-                      <Placeholder xs={4} style={{background: "#656b71", color: "whitesmoke"}} />{' '}
-                      <Placeholder xs={6} style={{background: "#656b71", color: "whitesmoke"}} /> <Placeholder xs={8} />
+                    <Placeholder as={Card.Text} animation="glow" style={{ background: "#656b71", color: "whitesmoke" }}>
+                      <Placeholder xs={7} style={{ background: "#656b71", color: "whitesmoke" }} />
+                      <Placeholder xs={4} style={{ background: "#656b71", color: "whitesmoke" }} />
+                      <Placeholder xs={4} style={{ background: "#656b71", color: "whitesmoke" }} />{' '}
+                      <Placeholder xs={6} style={{ background: "#656b71", color: "whitesmoke" }} /> <Placeholder xs={8} />
                     </Placeholder>
-                    <Placeholder.Button xs={6} style={{background: "orange"}} />
+                    <Placeholder.Button xs={6} style={{ background: "orange" }} />
                   </Card.Body>
                 </Card>
               ))
@@ -139,7 +139,16 @@ function Home({ user, isMenuOpen }) {
                     <img src="/MugBit.PNG" alt="Logo" />
                     <Card.Title><small><b>{document.name || <Skeleton />}</b></small></Card.Title>
                     <Card.Text>
-                      Uploaded by: {document.uploadedBy || <Skeleton count={2} />}
+                      Uploaded by:
+                      {/* <Link to={`/oprofilepage/${document.uploadedBy}`}> */}
+                      {/* <Link to={`/page/oprofilepage/${document.uploadedBy}`}>
+                        {document.uploadedBy || <Skeleton count={2} />} */}
+                        <Link to={document.uploadedBy === user.username ? `/page/profilepage` : `/page/oprofilepage/${document.uploadedBy}`}>
+                        {document.uploadedBy || <Skeleton count={2} />}
+
+                        
+                      </Link> 
+                      
                       <Badge bg="info">Document</Badge>
                       <Button style={{ background: 'orange', border: '1px solid orange' }} onClick={() => handleDocumentClick(document)}>Use This!</Button>
                       {/* <Button variant="danger" style={{ marginLeft: '5px' }} onClick={() => handleDeleteDocument(document._id)}>Delete</Button> */}

@@ -88,7 +88,82 @@ const login = async (req, res) => {
     }
 }
 
+// const updateProfilePicture = async (req, res) => {
+//     try {
+//         const { email } = req.body;
+//         const image = req.file.filename;
+
+//         // Update the user's profile image
+//         const updatedUser = await User.findOneAndUpdate(
+//             { email },
+//             { $set: { image } },
+//             { new: true }
+//         );
+
+//         if (!updatedUser) {
+//             return res.status(404).json({ message: 'User not found' });
+//         }
+
+//         // Respond with the updated user information
+//         const imageUrl = updatedUser.image ? `http://localhost:7000/uploads/images/${updatedUser.image}` : null;
+//         res.status(200).json({ user: { username: updatedUser.username, email: updatedUser.email, userimg: imageUrl } });
+//     } catch (error) {
+//         console.error('Error during profile picture update:', error);
+//         res.status(500).json({ message: 'Internal Server Error' });
+//     }
+// }
+
+const updateProfilePicture = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const image = req.file.filename;
+
+        // Check if the user exists
+        const existingUser = await User.findOne({ email });
+
+        if (!existingUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Update the user's profile image
+        const updatedUser = await User.findOneAndUpdate(
+            { email },
+            { $set: { image } },
+            { new: true }
+        );
+
+        // Respond with the updated user information
+        const imageUrl = updatedUser.image ? `http://localhost:7000/uploads/images/${updatedUser.image}` : null;
+        res.status(200).json({ user: { username: updatedUser.username, email: updatedUser.email, userimg: imageUrl } });
+    } catch (error) {
+        console.error('Error during profile picture update:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}
+
+const getProfileByUsername = async (req, res) => {
+    try {
+      const { username } = req.params;
+      const user = await User.findOne({ username });
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      res.status(200).json({
+        username: user.username,
+        email: user.email,
+        userimg: user.image, // Add other user fields as needed
+      });
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  };
+
 module.exports = {
     signup,
-    login
+    login,
+    updateProfilePicture,
+    getProfileByUsername
 }
